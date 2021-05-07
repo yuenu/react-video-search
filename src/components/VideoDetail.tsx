@@ -1,6 +1,13 @@
 import React from "react";
 
-const VideoDetail = ({ video }) => {
+// Type
+import type { Item } from '../apis/youtube'
+
+type Props = {
+  video: Item | null
+}
+
+const VideoDetail: React.FC<Props> = ({ video }) => {
   if (!video) {
     return <div>Loading...</div>;
   }
@@ -13,7 +20,7 @@ const VideoDetail = ({ video }) => {
         <iframe src={videoSrc} title="video player"></iframe>
       </div>
       <div className="ui segment">
-        <h4 classname="ui header">{video.snippet.title}</h4>
+        <h4 className="ui header">{video.snippet.title}</h4>
         <p>{video.snippet.description}</p>
       </div>
     </div>

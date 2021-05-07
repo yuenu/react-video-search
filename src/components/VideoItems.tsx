@@ -1,7 +1,17 @@
 import React from "react";
+
+// Style
 import "./VideoItem.css";
 
-const VideoItem = ({ video, onVideoSelect }) => {
+// Type
+import type { Item } from "../apis/youtube";
+
+type Props = {
+  video: Item;
+  onVideoSelect: (video: Item) => void;
+};
+
+const VideoItem: React.FC<Props> = ({ video, onVideoSelect }) => {
   return (
     <div onClick={() => onVideoSelect(video)} className="video_item item">
       <img
