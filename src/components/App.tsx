@@ -1,41 +1,30 @@
 import React, { useState, useEffect } from "react";
+
+// Components
 import SearchBar from "./SearchBar";
-import youtube from "../apis/youtube";
 import VideoList from "./VideoList";
 import VideoDetail from "./VideoDetail";
 
+// Hooks
+import useVideo from '../hooks/useVideos'
+
 
 // Type
-import type { RootObject, Item } from '../apis/youtube'
+import type { Item } from '../apis/youtube'
 
 const App: React.FC = () => {
-  const [videos, setVideos] = useState<Item[]>([]);
+  // const [videos, setVideos] = useState<Item[]>([]);
   const [selectedVideo, setSelectedVideo] = useState<Item | null>(null)
 
+  const [videos, search] = useVideo('buliding')
+
   useEffect(() => {
-    onTermSubmit('buildings')
-  }, [])
-
-
-  const onTermSubmit = async (term: string) => {
-    const { data }: { data: RootObject} = await youtube.get("/search", {
-      params: {
-        q: term,
-      },
-    });
-
-    setVideos(data.items)
-    setSelectedVideo(data.items[0])
-  };
-
-  const onVideoSelect = (video: Item) => {
-    setSelectedVideo(video)
-  }
-
+    setSelectedVideo(videos[0])
+  }, [videos])
 
   return (
     <div className="ui container" style={{ marginTop: "2rem" }}>
-      <SearchBar onFormSubmit={onTermSubmit} />
+      <SearchBar onFormSubmit={search} />
       <div className="ui grid">
         <div className="ui row">
           <div className="eleven wide column">
@@ -43,7 +32,7 @@ const App: React.FC = () => {
           </div>
           <div className="five wide column">
             <VideoList
-              onVideoSelect={onVideoSelect}
+              onVideoSelect={(video: Item) => setSelectedVideo(video)}
               videos={videos}
             />
           </div>
